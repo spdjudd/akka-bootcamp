@@ -113,8 +113,10 @@ The actor classes themselves are already defined, but you will have to make your
 Again, in `Program.cs`, add this just below where you made your `ActorSystem`:
 
 ```csharp
-var consoleWriterActor = MyActorSystem.ActorOf(Props.Create(() => new ConsoleWriterActor()));
-var consoleReaderActor = MyActorSystem.ActorOf(Props.Create(() => new ConsoleReaderActor(consoleWriterActor)));
+var consoleWriterActor = MyActorSystem.ActorOf(Props.Create(() =>
+new ConsoleWriterActor()));
+var consoleReaderActor = MyActorSystem.ActorOf(Props.Create(() =>
+new ConsoleReaderActor(consoleWriterActor)));
 ```
 
 We will get into the details of `Props` and `ActorRef`s in lesson 3, so don't worry about them much for now. Just know that this is how you make an actor.
@@ -150,6 +152,8 @@ Once you've made your edits, press `F5` to compile and run the sample in Visual 
 You should see something like this, when it is working correctly:
 ![Petabridge Akka.NET Bootcamp Lesson 1.1 Correct Output](Images/example.png)
 
+> **N.B.** In Akka.NET 1.0.8 and later, you'll receive a warning about the JSON.NET serializer being deprecated in a future released of Akka.NET (1.5). This is true and you can [learn how to start using the beta of the Wire serializer package here](http://getakka.net/docs/Serialization#how-to-setup-wire-as-default-serializer). This is mainly meant to be a warning for Akka.NET users running Akka.Persistence or Akka.Remote, which both depend on the default serializer.
+
 
 ### Once you're done
 Compare your code to the code in the [Completed](Completed/) folder to see what the instructors included in their samples.
@@ -157,10 +161,9 @@ Compare your code to the code in the [Completed](Completed/) folder to see what 
 ## Great job! Onto Lesson 2!
 Awesome work! Well done on completing your first lesson.
 
-**Let's move onto [Lesson 2 - Defining and Handling Different Types of Messages](../lesson2).**
+**Let's move onto [Lesson 2 - Defining and Handling Different Types of Messages](../lesson2/README.md).**
 
 ## Any questions?
-**Don't be afraid to ask questions** :).
 
 Come ask any questions you have, big or small, [in this ongoing Bootcamp chat with the Petabridge & Akka.NET teams](https://gitter.im/petabridge/akka-bootcamp).
 

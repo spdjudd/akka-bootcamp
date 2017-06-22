@@ -1,5 +1,5 @@
 # Lesson 1.2: Defining and Handling Messages
-In this lesson, you will make your own message types and use learn how to control processing flow within your actors based on your custom messages. Doing so will teach you the fundamentals of communicating in a message- and event-driven manner within your actor system.
+In this lesson, you will make your own message types and learn how to control processing flow within your actors based on your custom messages. Doing so will teach you the fundamentals of communicating in a message- and event-driven manner within your actor system.
 
 This lesson picks up right where Lesson 1 left off, and continues extending our budding systems of console actors. In addition to defining our own messages, we'll also add some simple validation for the input we enter and take action based on the results of that validation.
 
@@ -224,21 +224,23 @@ private void GetAndValidateInput()
     else if (String.Equals(message, ExitCommand, StringComparison.OrdinalIgnoreCase))
     {
         // shut down the entire actor system (allows the process to exit)
-        Context.System.Shutdown();
+        Context.System.Terminate();
     }
     else
     {
         var valid = IsValid(message);
         if (valid)
         {
-            _consoleWriterActor.Tell(new Messages.InputSuccess("Thank you! Message was valid."));
+            _consoleWriterActor.Tell(new Messages.InputSuccess("Thank you!
+             Message was valid."));
 
             // continue reading messages from console
             Self.Tell(new Messages.ContinueProcessing());
         }
         else
         {
-        	Self.Tell(new Messages.ValidationError("Invalid: input had odd number of characters."));
+        	Self.Tell(new Messages.ValidationError("Invalid: input had
+            odd number of characters."));
         }
     }
 }
@@ -269,14 +271,16 @@ static void Main(string[] args)
     // initialize MyActorSystem
     MyActorSystem = ActorSystem.Create("MyActorSystem");
 
-    var consoleWriterActor = MyActorSystem.ActorOf(Props.Create(() => new ConsoleWriterActor()));
-    var consoleReaderActor = MyActorSystem.ActorOf(Props.Create(() => new ConsoleReaderActor(consoleWriterActor)));
+    var consoleWriterActor = MyActorSystem.ActorOf(Props.Create(() =>
+    new ConsoleWriterActor()));
+    var consoleReaderActor = MyActorSystem.ActorOf(Props.Create(() =>
+    new ConsoleReaderActor(consoleWriterActor)));
 
     // tell console reader to begin
     consoleReaderActor.Tell(ConsoleReaderActor.StartCommand);
 
     // blocks the main thread from exiting until the actor system is shut down
-    MyActorSystem.AwaitTermination();
+    MyActorSystem.WhenTerminated.Wait();
 }
 ```
 
@@ -326,10 +330,9 @@ Compare your code to the solution in the [Completed](Completed/) folder to see w
 ##  Great job! Onto Lesson 3!
 Awesome work! Well done on completing this lesson.
 
-**Let's move onto [Lesson 3 - `Props` and `IActorRef`s](../lesson3).**
+**Let's move onto [Lesson 3 - `Props` and `IActorRef`s](../lesson3/README.md).**
 
 ## Any questions?
-**Don't be afraid to ask questions** :).
 
 Come ask any questions you have, big or small, [in this ongoing Bootcamp chat with the Petabridge & Akka.NET teams](https://gitter.im/petabridge/akka-bootcamp).
 
